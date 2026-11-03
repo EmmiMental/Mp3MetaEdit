@@ -12,7 +12,7 @@ class AdvancedMP3EditorApp:
 
   def __init__(self, root):
     self.root = root
-    self.root.title("Advanced MP3 Tag & Cover Art Inspector")
+    self.root.title("Mp3MetaEdit - Advanced ID3v2 Editor")
     self.root.geometry("600x580")
     self.root.resizable(False, False)
 
