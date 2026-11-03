@@ -1,4 +1,4 @@
-# MP3 Metadata & Cover Art Inspector
+# Mp3MetaEdit
 
 A lightweight, local-first Python utility featuring a graphical user interface (GUI) built with `tkinter` and `Pillow`. Designed to inspect, parse, and edit basic ID3 tags and extract embedded album artwork directly from binary MP3 streams without external system dependencies.
 
