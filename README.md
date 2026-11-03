@@ -1,4 +1,5 @@
 Mp3MetaEdit
+
 A lightweight, local-first Python utility featuring a graphical user interface (GUI) built with tkinter and Pillow. Designed to inspect, parse, and edit basic ID3 tags and extract embedded album artwork directly from binary MP3 streams without external system dependencies.
 
 This is a project to practice python and figure out file parsing, I had the help of some local AI models for planning and debugging. I will continue to add features for now, I hope someone get’s some use out of it, however unlikely that may be ;)
