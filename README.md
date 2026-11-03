@@ -1,75 +1,51 @@
 # Mp3MetaEdit
 
-A lightweight, local-first Python utility featuring a graphical user interface (GUI) built with `tkinter` and `Pillow`. Designed to inspect, parse, and edit basic ID3 tags and extract embedded album artwork directly from binary MP3 streams without external system dependencies.
+A lightweight, robust Python/Tkinter desktop utility designed for low-level binary MP3 metadata inspection, ID3v2 frame parsing, embedded cover art extraction, and safe file reconstruction.
 
-**NOTE:** This project was developed to practice binary file parsing and stream manipulation in Python with the assistance of local AI models.
-
----
-
-## Features
-
-| Feature | Description |
-| :---- | :---- |
-| **ID3v2 Parsing** | Reads ID3v2 headers (v2.3/v2.4), computes synchsafe integer tag sizes, and dynamically extracts text frames (`TIT2`, `TPE1`, `TALB`, `TYER`). |
-| **Cover Art Extraction** | Scans binary frame payloads for standard JPEG (`\xff\xd8`) and PNG magic bytes to render album art dynamically in the UI. |
-| **ID3v1 Support** | Reads and writes classic fixed-width 128-byte ID3v1 tags at the end of the file stream. |
-| **Cross-Platform GUI** | Clean, native desktop interface utilizing Tkinter and `ttk` styling. |
+Built from the ground up to master raw byte-stream manipulation and file structure integrity without relying on heavy external wrapper libraries for its core parsing engine.
 
 ---
 
-## Tech Stack
+## 🚀 Key Features
 
-- **Language:** Python 3.x  
-- **GUI Framework:** `tkinter`, `ttk`  
-- **Image Processing:** `Pillow` (PIL)  
-- **Binary Handling:** Built-in `struct`, `io.BytesIO`, and direct binary file streaming (`rb`, `r+b`).
+* **Low-Level Binary ID3v2 Parsing:** Directly reads and decodes binary ID3v2 headers, calculating bit-shifted **synchsafe integers** to determine exact tag sizes and frame offsets.  
+* **Atomic Temp-File Rewrite (Method 1):** Avoids dangerous in-place file corruption by constructing a clean output file from scratch—re-encoding headers and framing before performing an atomic OS-level file replacement (`os.replace`).  
+* **Embedded Cover Art (`APIC`) Handling:** Automatically scans for embedded JPEG/PNG image payloads within `APIC` frames, extracts them on the fly, and caches them to preserve album art during metadata updates.  
+* **UTF-8 & Multi-Encoding Text Framing:** Safely decodes and encodes text frames (`TIT2` Title, `TPE1` Artist, `TALB` Album, `TYER`/`TDRC` Year) supporting Latin-1, UTF-16, and UTF-8 formats.  
+* **Audio Stream Synchronization:** Cleans leading null padding bytes during reconstruction to maintain pristine MPEG frame alignment, ensuring compatibility with professional audio tools like **Mixxx**.
 
 ---
 
-## Installation & Setup
+## 🛠️ Tech Stack
 
-1. **Clone the repository:**
+* **Language:** Python 3.x  
+* **GUI Framework:** `tkinter` (`ttk` themed widgets)  
+* **Image Processing:** `Pillow` (PIL) for rendering embedded cover art thumbnails  
+* **System Libraries:** `pathlib`, `os`, `tempfile`, `shutil`, `io`
 
-```sh
-git clone https://github.com/EmmiMental/Mp3MetaEdit.git
-cd Mp3MetaEdit
-```
+---
 
-2. **Create and activate a virtual environment:**
+## 📦 Installation & Usage
 
-```sh
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
-```
-
-3. **Install dependencies:**
+1. Ensure you have Python 3 and Pillow installed:
 
 ```sh
 pip install Pillow
 ```
 
----
-
-## Usage
-
-Run the main application script from your active virtual environment:
+2. Clone or download the repository, then run the script:
 
 ```sh
-python Mp3MetaEdit.py
+python mp3_meta_edit.py
 ```
 
-1. Click **Browse MP3...** to select any local `.mp3` file.  
-2. View detected ID3v2 version specs, metadata fields, and embedded cover art.  
-3. Modify text fields and save ID3v1 tags directly back to the file stream.
+3. Click **Browse MP3...** to load a file, inspect its ID3v2 version and embedded artwork, edit the text fields, and click **Save Tags** to execute an atomic binary rewrite.
 
 ---
 
-## Project Status
+## 🗺️ Roadmap & Future Features
 
-Developed as a "clean-room" sandbox project to master binary file stream manipulation (`f.seek`, byte offsets, synchsafe integer bit-shifting) in preparation for legacy file format reverse-engineering.
-
----
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+- [ ] **Expanded Metadata Fields:** Add support for Genre, Track Number, and custom user frames.  
+- [ ] **Dynamic Cover Art Swapping:** Enable loading and injecting new images into the `APIC` frame.  
+- [ ] **Batch Processing:** Expand the application to handle multi-file directory scans and bulk tag updates.  
+- [ ] **UI Modernization:** Implement a sleek custom theme or dark mode for a more polished desktop aesthetic.
