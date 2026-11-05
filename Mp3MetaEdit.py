@@ -111,7 +111,7 @@ class AdvancedMP3EditorApp:
     )
     self.art_label.pack(fill="both", expand=True, padx=10, pady=10)
 
-    # NEW: Button to change/load new album art
+    # Button to change/load new album art
     change_art_btn = ttk.Button(
         art_frame, text="Change Art...", command=self.change_cover_art
     )
@@ -152,7 +152,7 @@ class AdvancedMP3EditorApp:
     return metadata
 
   def parse_mp3_file(self, path: Path):
-    """Generalized parser for text frames and APIC."""
+    """Generalized parser for text frames and precise APIC image extraction."""
     metadata = {}
     image_bytes = None
 
@@ -194,11 +194,24 @@ class AdvancedMP3EditorApp:
             except: pass
           elif frame_id == "APIC":
             try:
-              jpeg_idx = frame_content.find(b"\xff\xd8")
-              png_idx = frame_content.find(b"\x89PNG\r\n\x1a\n")
-              start_idx = jpeg_idx if jpeg_idx != -1 else png_idx
-              if start_idx != -1:
-                image_bytes = frame_content[start_idx:]
+              # Robust APIC parsing: Skip text encoding (1 byte), MIME type string, 
+              # null terminator, picture type (1 byte), and description string.
+              pos = 1
+              # Find null terminator for MIME type
+              while pos < len(frame_content) and frame_content[pos] != 0:
+                pos += 1
+              pos += 1  # Skip null byte
+              
+              if pos < len(frame_content):
+                pos += 1  # Skip picture type byte
+                
+              # Skip description string null terminator(s)
+              while pos < len(frame_content) and frame_content[pos] != 0:
+                pos += 1
+              pos += 1  # Skip null byte
+              
+              if pos < len(frame_content):
+                image_bytes = frame_content[pos:]
             except: pass
 
           offset += 10 + frame_size
@@ -222,24 +235,18 @@ class AdvancedMP3EditorApp:
       return
 
     try:
-      # Read the new image file as raw binary bytes
       with open(img_path, "rb") as img_file:
         new_img_bytes = img_file.read()
 
-      # Validate that Pillow can open it successfully before caching
       Image.open(BytesIO(new_img_bytes))
-
-      # Cache the new bytes and update the UI thumbnail
       self.current_image_bytes = new_img_bytes
       self.display_cover_art(new_img_bytes)
       
       messagebox.showinfo(
-          "Success", "Cover art staged! Click 'Save Tags' to write it to the file."
+          "Success", "Cover art staged! Click 'Save ID3v2' to write it to the file."
       )
-
     except Exception as e:
       messagebox.showerror("Error", f"Invalid or unreadable image file: {e}")
-  
   
   def browse_file(self):
     file_path = filedialog.askopenfilename(
@@ -281,6 +288,8 @@ class AdvancedMP3EditorApp:
   def display_cover_art(self, img_bytes: bytes):
     try:
       img = Image.open(BytesIO(img_bytes))
+      if img.mode in ("RGBA", "P"):
+        img = img.convert("RGB")
       img.thumbnail((350, 350))
       self.current_image = ImageTk.PhotoImage(img)
       self.art_label.config(image=self.current_image, text="")
@@ -320,7 +329,7 @@ class AdvancedMP3EditorApp:
 
     if self.current_image_bytes:
       mime_type = b"image/jpeg" if self.current_image_bytes[:2] == b"\xff\xd8" else b"image/png"
-      apic_content = b"\x01" + mime_type + b"\x00\x03\x00" + self.current_image_bytes
+      apic_content = b"\x03" + mime_type + b"\x00\x03\x00" + self.current_image_bytes
       apic_frame = b"APIC" + len(apic_content).to_bytes(4, "big") + b"\x00\x00" + apic_content
       new_frames.extend(apic_frame)
 
@@ -376,7 +385,16 @@ class AdvancedMP3EditorApp:
     try:
       self.save_id3v2_and_audio(self.current_file_path)
       messagebox.showinfo("Success", "ID3v2 tags updated successfully!")
-      self.browse_file()
+      
+      v2_data, img_bytes = self.parse_mp3_file(self.current_file_path)
+      self.current_image_bytes = img_bytes
+      
+      if img_bytes:
+        self.display_cover_art(img_bytes)
+      else:
+        self.art_label.config(image="", text="No Cover Art\nFound")
+        self.current_image = None
+        
     except Exception as e:
       messagebox.showerror("Error", f"Failed to rewrite MP3 tags: {e}")
 
@@ -387,7 +405,9 @@ class AdvancedMP3EditorApp:
     try:
       self.save_id3v1(self.current_file_path)
       messagebox.showinfo("Success", "ID3v1 (Legacy) tags updated!")
-      self.browse_file()
+      
+      v2_data, img_bytes = self.parse_mp3_file(self.current_file_path)
+      self.current_image_bytes = img_bytes
     except Exception as e:
       messagebox.showerror("Error", f"Failed to save ID3v1: {e}")
 
