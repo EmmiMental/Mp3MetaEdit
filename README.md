@@ -12,7 +12,7 @@ Built from the ground up to master raw byte-stream manipulation and file structu
 * **Expanded Metadata Fields:** Supports a wide range of standard ID3 tags including Title, Artist, Album, Album Artist, Composer, Genre, Year, Track, Disc, BPM, Comment, Copyright, and more.
 * **Scrollable Metadata Editor:** Features a larger, scrollable UI to accommodate many metadata fields without cluttering the interface.
 * **Atomic Temp-File Rewrite:** Avoids dangerous in-place file corruption by constructing a clean output file from scratch—re-encoding headers and framing before performing an atomic OS-level file replacement (`os.replace`).
-* **Embedded Cover Art (`APIC`) Handling:** Automatically scans for embedded JPEG/PNG image payloads within `APIC` frames, extracts them on the fly, and caches them to preserve album art during metadata updates. can change the embedded image and save it with the new image
+* **Embedded Cover Art (`APIC`) Handling:** Automatically scans for embedded JPEG/PNG image payloads within `APIC` frames, extracts them on the fly, and caches them to preserve album art during metadata updates. can change the embedded image and save it with the new image. a bit borked at the moment, use with caution
 * **UTF-16 Text Framing:** Safely encodes text frames using UTF-16 for broad compatibility across different operating systems and media players.
 * **Audio Stream Synchronization:** Cleans leading null padding bytes during reconstruction to maintain pristine MPEG frame alignment, ensuring compatibility with professional audio tools like **Mixxx**.
 
