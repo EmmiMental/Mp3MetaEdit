@@ -8,10 +8,12 @@ Built from the ground up to master raw byte-stream manipulation and file structu
 
 ## 🚀 Key Features
 
-* **Low-Level Binary ID3v2 Parsing:** Directly reads and decodes binary ID3v2 headers, calculating bit-shifted **synchsafe integers** to determine exact tag sizes and frame offsets.  
-* **Atomic Temp-File Rewrite (Method 1):** Avoids dangerous in-place file corruption by constructing a clean output file from scratch—re-encoding headers and framing before performing an atomic OS-level file replacement (`os.replace`).  
-* **Embedded Cover Art (`APIC`) Handling:** Automatically scans for embedded JPEG/PNG image payloads within `APIC` frames, extracts them on the fly, and caches them to preserve album art during metadata updates.  
-* **UTF-8 & Multi-Encoding Text Framing:** Safely decodes and encodes text frames (`TIT2` Title, `TPE1` Artist, `TALB` Album, `TYER`/`TDRC` Year) supporting Latin-1, UTF-16, and UTF-8 formats.  
+* **Dual-Version Support:** Directly reads and decodes both **ID3v1 (Legacy)** and **ID3v2 (Extended)** metadata formats.
+* **Expanded Metadata Fields:** Supports a wide range of standard ID3 tags including Title, Artist, Album, Album Artist, Composer, Genre, Year, Track, Disc, BPM, Comment, Copyright, and more.
+* **Scrollable Metadata Editor:** Features a larger, scrollable UI to accommodate many metadata fields without cluttering the interface.
+* **Atomic Temp-File Rewrite:** Avoids dangerous in-place file corruption by constructing a clean output file from scratch—re-encoding headers and framing before performing an atomic OS-level file replacement (`os.replace`).
+* **Embedded Cover Art (`APIC`) Handling:** Automatically scans for embedded JPEG/PNG image payloads within `APIC` frames, extracts them on the fly, and caches them to preserve album art during metadata updates.
+* **UTF-16 Text Framing:** Safely encodes text frames using UTF-16 for broad compatibility across different operating systems and media players.
 * **Audio Stream Synchronization:** Cleans leading null padding bytes during reconstruction to maintain pristine MPEG frame alignment, ensuring compatibility with professional audio tools like **Mixxx**.
 
 ---
@@ -27,25 +29,50 @@ Built from the ground up to master raw byte-stream manipulation and file structu
 
 ## 📦 Installation & Usage
 
-1. Ensure you have Python 3 and Pillow installed:
+### 1. Install Python
+If you don't have Python installed, download and install the latest version from [python.org](https://www.python.org/). Make sure to check the box that says **"Add Python to PATH"** during installation.
 
+### 2. Set Up the Project
+Open your terminal (or Command Prompt) in the project folder and follow these steps to create an isolated environment:
+
+**On Windows:**
 ```sh
+# Create a virtual environment
+python -m venv venv
+
+# Activate it
+venv\Scripts\activate
+
+# Install dependencies
 pip install Pillow
 ```
 
-2. Clone or download the repository, then run the script:
-
+**On macOS/Linux:**
 ```sh
-python mp3_meta_edit.py
+# Create a virtual environment
+python3 -m venv venv
+
+# Activate it
+source venv/bin/activate
+
+# Install dependencies
+pip install Pillow
 ```
 
-3. Click **Browse MP3...** to load a file, inspect its ID3v2 version and embedded artwork, edit the text fields, and click **Save Tags** to execute an atomic binary rewrite.
+### 3. Run the Application
+With the virtual environment active, start the editor:
+
+```sh
+python Mp3MetaEdit.py
+```
+
+Click **Browse MP3...** to load a file. Inspect the ID3 version status and artwork, edit the expanded metadata fields, and use the **Save ID3v2** or **Save ID3v1** buttons to update the file.
 
 ---
 
 ## 🗺️ Roadmap & Future Features
 
-- [ ] **Expanded Metadata Fields:** Add support for Genre, Track Number, and custom user frames.  
-- [ ] **Dynamic Cover Art Swapping:** Enable loading and injecting new images into the `APIC` frame.  
-- [ ] **Batch Processing:** Expand the application to handle multi-file directory scans and bulk tag updates.  
+- [x] **Expanded Metadata Fields:** Support for Genre, Track Number, BPM, and many more.
+- [ ] **Dynamic Cover Art Swapping:** Enable loading and injecting new images into the `APIC` frame.
+- [ ] **Batch Processing:** Expand the application to handle multi-file directory scans and bulk tag updates.
 - [ ] **UI Modernization:** Implement a sleek custom theme or dark mode for a more polished desktop aesthetic.
