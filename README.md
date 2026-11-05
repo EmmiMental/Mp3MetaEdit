@@ -14,7 +14,7 @@ Built from the ground up to master raw byte-stream manipulation and file structu
 * **Atomic Temp-File Rewrite:** Avoids dangerous in-place file corruption by constructing a clean output file from scratch—re-encoding headers and framing before performing an atomic OS-level file replacement (`os.replace`).
 * **Embedded Cover Art (`APIC`) Handling:** Automatically scans for embedded JPEG/PNG image payloads within `APIC` frames, extracts them on the fly, and caches them to preserve album art during metadata updates. can change the embedded image and save it with the new image.
 * **UTF-16 Text Framing:** Safely encodes text frames using UTF-16 for broad compatibility across different operating systems and media players.
-* **Audio Stream Synchronization:** Cleans leading null padding bytes during reconstruction to maintain pristine MPEG frame alignment, ensuring compatibility with professional audio tools like **Mixxx**.
+* **Audio Stream Synchronization:** Cleans leading null padding bytes during reconstruction to maintain pristine MPEG frame alignment, ensuring compatibility with professional audio tools and audio players.
 
 ---
 
