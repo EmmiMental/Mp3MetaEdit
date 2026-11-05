@@ -1,6 +1,6 @@
 # Mp3MetaEdit
 
-A lightweight, robust Python/Tkinter desktop utility designed for low-level binary MP3 metadata inspection, ID3v2 frame parsing, embedded cover art extraction, and safe file reconstruction.
+A lightweight, robust Python/Tkinter desktop utility designed for low-level binary MP3 metadata inspection and editing, ID3v2 frame parsing, embedded cover art extraction, and safe file reconstruction. support for id3v1 tags.
 
 Built from the ground up to master raw byte-stream manipulation and file structure integrity without relying on heavy external wrapper libraries for its core parsing engine.
 
@@ -73,7 +73,7 @@ Click **Browse MP3...** to load a file. Inspect the ID3 version status and artwo
 ## 🗺️ Roadmap & Future Features
 
 - [x] **Expanded Metadata Fields:** Support for Genre, Track Number, BPM, and many more.
-- [ ] **Dynamic Cover Art Swapping:** Enable loading and injecting new images into the `APIC` frame.
+- [x] **Dynamic Cover Art Swapping:** Enable loading and injecting new images into the `APIC` frame.
 - [ ] **Batch Processing:** Expand the application to handle multi-file directory scans and bulk tag updates.
 - [ ] **UI Modernization:** Implement a sleek custom theme or dark mode for a more polished desktop aesthetic.
 
