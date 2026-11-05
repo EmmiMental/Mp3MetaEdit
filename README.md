@@ -76,3 +76,9 @@ Click **Browse MP3...** to load a file. Inspect the ID3 version status and artwo
 - [ ] **Dynamic Cover Art Swapping:** Enable loading and injecting new images into the `APIC` frame.
 - [ ] **Batch Processing:** Expand the application to handle multi-file directory scans and bulk tag updates.
 - [ ] **UI Modernization:** Implement a sleek custom theme or dark mode for a more polished desktop aesthetic.
+
+---
+
+## 📝 Disclosures
+
+This project was developed with the assistance of AI tools including **Gemin** in the browser, **Qwen2.5-coder** (local), **Deepseek-r1** (local), and **Gemin 3 / 3.1 Flash** (API). These tools were used to plan and provide insights during the development process. While the final code and documentation are presented here, the contributions of these AI tools are acknowledged.
