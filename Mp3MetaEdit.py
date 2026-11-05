@@ -96,8 +96,10 @@ class AdvancedMP3EditorApp:
     )
     self.info_box.grid(row=len(self.tag_mapping), column=0, columnspan=2, pady=15, sticky="nsew")
 
-    # Right: Cover Art Display
-    art_frame = ttk.LabelFrame(content_frame, text=" Cover Art ", padding=15)
+    # Right: Cover Art Display Frame
+    art_frame = ttk.LabelFrame(
+        content_frame, text=" Embedded Cover Art ", padding=10
+    )
     art_frame.pack(side="right", fill="both", padx=(5, 0))
 
     self.art_label = ttk.Label(
@@ -105,9 +107,15 @@ class AdvancedMP3EditorApp:
         text="No Cover Art\nFound",
         anchor="center",
         justify="center",
-        width=40,
+        width=22,
     )
     self.art_label.pack(fill="both", expand=True, padx=10, pady=10)
+
+    # NEW: Button to change/load new album art
+    change_art_btn = ttk.Button(
+        art_frame, text="Change Art...", command=self.change_cover_art
+    )
+    change_art_btn.pack(fill="x", pady=(5, 0))
 
     # Save Buttons at the bottom
     button_frame = ttk.Frame(main_frame)
@@ -197,6 +205,42 @@ class AdvancedMP3EditorApp:
 
     return metadata, image_bytes
 
+  def change_cover_art(self):
+    """Opens a file dialog to select a new image, caches its bytes, and updates the UI preview."""
+    if not self.current_file_path:
+      messagebox.showwarning("Warning", "Please load an MP3 file first!")
+      return
+
+    img_path = filedialog.askopenfilename(
+        title="Select Cover Art Image",
+        filetypes=[
+            ("Image Files", "*.jpg *.jpeg *.png"),
+            ("All Files", "*.*"),
+        ],
+    )
+    if not img_path:
+      return
+
+    try:
+      # Read the new image file as raw binary bytes
+      with open(img_path, "rb") as img_file:
+        new_img_bytes = img_file.read()
+
+      # Validate that Pillow can open it successfully before caching
+      Image.open(BytesIO(new_img_bytes))
+
+      # Cache the new bytes and update the UI thumbnail
+      self.current_image_bytes = new_img_bytes
+      self.display_cover_art(new_img_bytes)
+      
+      messagebox.showinfo(
+          "Success", "Cover art staged! Click 'Save Tags' to write it to the file."
+      )
+
+    except Exception as e:
+      messagebox.showerror("Error", f"Invalid or unreadable image file: {e}")
+  
+  
   def browse_file(self):
     file_path = filedialog.askopenfilename(
         title="Select MP3 File", filetypes=[("MP3 Files", "*.mp3")]
