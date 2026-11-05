@@ -81,4 +81,4 @@ Click **Browse MP3...** to load a file. Inspect the ID3 version status and artwo
 
 ## 📝 Disclosures
 
-This project was developed with the assistance of AI tools including **Gemin** in the browser, **Qwen2.5-coder** (local), **Deepseek-r1** (local), and **Gemin 3 / 3.1 Flash** (API). These tools were used to plan and provide insights during the development process. While the final code and documentation are presented here, the contributions of these AI tools are acknowledged.
+This project was developed with the assistance of AI tools including **Gemini** in the browser, **Qwen2.5-coder** (local), **Deepseek-r1** (local), and **Gemin 3 / 3.1 Flash** (API). These tools were used to plan and provide insights during the development process. While the final code and documentation are presented here, the contributions of these AI tools are acknowledged.
