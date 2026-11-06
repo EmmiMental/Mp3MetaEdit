@@ -76,6 +76,9 @@ Click **Browse MP3...** to load a file. Inspect the ID3 version status and artwo
 - [x] **Dynamic Cover Art Swapping:** Enable loading and injecting new images into the `APIC` frame.
 - [ ] **Batch Processing:** Expand the application to handle multi-file directory scans and bulk tag updates.
 - [ ] **UI Modernization:** Implement a sleek custom theme or dark mode for a more polished desktop aesthetic.
+- [ ] **online cover art search** - Integrate a search engine to find cover art for the selected album. allow to grab images from a cover art repository through search or scrape.
+- [ ] **theme support** add multiple themes and color schemes, develop a framework for users to customize the appearance of the application.
+
 
 ---
 
